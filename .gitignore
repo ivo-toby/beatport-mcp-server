@@ -1,0 +1,5 @@
+.aider*
+.env
+dist/
+node_modules/
+OPENAPI_ISSUE*

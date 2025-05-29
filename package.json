@@ -1,0 +1,66 @@
+{
+  "name": "@ivotoby/beatport-mcp-server",
+  "version": "0.1.0",
+  "description": "An MCP server that can connect to the Beatport API.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivo-toby/beatport-mcp-server"
+  },
+  "bin": {
+    "beatport-mcp-server": "./bin/mcp-server.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build.js && chmod +x bin/mcp-server.js",
+    "clean": "rm -rf dist",
+    "lint": "eslint --config eslint.config.js src/**/*.ts",
+    "lint:fix": "eslint --fix --config eslint.config.js src/**/*.ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "watch": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "prepare": "npm run build",
+    "dev": "nodemon --watch src -e ts --exec 'npm run build'",
+    "inspect": "node -r dotenv/config ./scripts/inspect.js",
+    "inspect-watch": "node ./scripts/inspect-watch.js",
+    "start": "node bin/mcp-server.js",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest watch --config vitest.config.ts"
+  },
+  "dependencies": {
+    "@ivotoby/openapi-mcp-server": "file:../mcp-openapi-server",
+    "@modelcontextprotocol/sdk": "1.11.1",
+    "axios": "^1.8.4",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@semantic-release/commit-analyzer": "^11.1.0",
+    "@semantic-release/github": "^9.2.6",
+    "@semantic-release/npm": "^11.0.3",
+    "@semantic-release/release-notes-generator": "^12.1.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.13.11",
+    "@types/yargs": "^17.0.33",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "dotenv": "^16.4.7",
+    "esbuild": "^0.25.1",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-perfectionist": "^4.7.0",
+    "eslint-plugin-prettier": "^5.4.0",
+    "msw": "^2.7.0",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.4.2",
+    "semantic-release": "^22.0.12",
+    "typescript": "^5.3.2",
+    "typescript-eslint": "^8.22.0",
+    "vitest": "^3.1.3"
+  }
+}

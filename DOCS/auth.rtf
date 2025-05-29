@@ -1,0 +1,377 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Arial-BoldMT;\f1\fswiss\fcharset0 ArialMT;\f2\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;\red57\green57\blue57;\red254\green254\blue254;\red39\green68\blue94;
+\red239\green239\blue239;\red121\green121\blue121;\red19\green19\blue19;\red246\green246\blue239;\red252\green53\blue143;
+\red34\green255\blue131;\red255\green255\blue255;\red157\green101\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c28627\c28627\c28627;\cssrgb\c99608\c99608\c99608;\cssrgb\c19608\c33725\c44314;
+\cssrgb\c94902\c94902\c94902;\cssrgb\c54902\c54902\c54902;\cssrgb\c9804\c9804\c9804;\cssrgb\c97255\c97255\c94902;\cssrgb\c100000\c32549\c62745;
+\cssrgb\c392\c100000\c58431;\cssrgb\c100000\c100000\c100000;\cssrgb\c68235\c50588\c100000;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww35500\viewh21080\viewkind0
+\deftab720
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs48 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Introduction\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 OAuth2 Authentication\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 Prerequisites\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 Never publically share your client secret. JavaScript applications with no server backend can use the browser redirect flow. Server side applications can use the secret based flow. You can use one of the following mechanisms to obtain an access token.\
+Some of the examples shown here rely on\'a0{\field{\*\fldinst{HYPERLINK "https://httpie.org/"}}{\fldrslt \cf4 \strokec4 HTTPie}}, a CLI utility for making http requess.\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 Step 1: Obtaining an Access Token\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 Authorization Code Grant Flow\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 Your OAuth Application will be configured to accept one or more redirect URIs. These URIs should be managed by you and should be configured to accept a\'a0
+\f2 \cf4 \cb5 \strokec4 code
+\f1 \cf2 \cb3 \strokec2 \'a0URL parameter which you will exchange for an access token.\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf6 \cb7 \strokec6 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 # in a browser\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 https://api.beatport.com/v4/auth/o/authorize/?client_id=<CLIENT_ID>&\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 response_type\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =code&\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 redirect_uri\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =<REDIRECT_URI>\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1 \cf2 \cb3 \strokec2 \shad0 Hit "Authorize" to accept the scope grants. A grant token code will be returned to the redirect URI as a url param\'a0
+\f2 \cf4 \cb5 \strokec4 code
+\f1 \cf2 \cb3 \strokec2 , if it is a valid URI for the application.\
+Exchange grant token code for an access token.\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_CLIENT_ID"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CODE\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "CODE_FROM_BROWSER_REDIRECT"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb7 \strokec6 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 # note the `-f` option for form-encoding\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 http \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 -f\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  https://api.beatport.com/v4/auth/o/token/ \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 client_id\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 code\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CODE\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 grant_type\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =authorization_code \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 redirect_uri\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =https://api.beatport.com/v4/auth/o/post-message\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 User Password Grant Flow\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 Your OAuth application should have a client id, client secret, username and password that can be used to obtain an access token.\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_CLIENT_ID"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CLIENT_SECRET\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_CLIENT_SECRET"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 USERNAME\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "VALID BEATPORT USER NAME"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 PASSWORD\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "PASSWORD ASSOCIATED TO USERNAME"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf6 \strokec6 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 # note the `-f` option for form-encoding\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 http \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 -f\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  https://api.beatport.com/v4/auth/o/token/ \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 client_id\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 client_secret\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CLIENT_SECRET\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 username\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $USERNAME\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 password\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $PASSWORD\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 grant_type\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =password\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 Client Credentials Grant Flow\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 Your OAuth application should have a client id and secret that can be used to obtain an access token.\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_CLIENT_ID"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CLIENT_SECRET\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_CLIENT_SECRET"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 http \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 -f\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  https://api.beatport.com/v4/auth/o/token/ \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 client_id\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 client_secret\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CLIENT_SECRET\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 grant_type\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =client_credentials\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 Access Token Response\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 After succesfully authorizing using the client or server based flows, you should have received a response that looks something like the following:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "access_token"\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 : \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_ACCESS_TOKEN"\cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ,\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "refresh_token"\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 : \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_REFRESH_TOKEN"\cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ,\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "expires_in"\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 : \cf12 \strokec12 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 36000\cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ,\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "scope"\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 : \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "..."\cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ,\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "token_type"\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 : \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Bearer"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 Step 2: Using the Access Token\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 Once you have obtained an access token, you can use it to make authenticated requests by applying it as a header to each request.\
+For example, introspecting the current authorized user:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ACCESS_TOKEN\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_ACCESS_TOKEN"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 http https://api.beatport.com/v4/auth/o/introspect/ \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Authorization:Bearer \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $ACCESS_TOKEN\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 Step 3: Refreshing the Access Token\
+\pard\pardeftab720\partightenfactor0
+
+\f2\b0\fs32 \AppleTypeServices \cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_CLIENT_ID"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ACCESS_TOKEN\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_ACCESS_TOKEN"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 REFRESH_TOKEN\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_REFRESH_TOKEN"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 http \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 -f\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  https://api.beatport.com/v4/auth/o/token/ \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Authorization:Bearer \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $ACCESS_TOKEN\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 client_id\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 refresh_token\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $REFRESH_TOKEN\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \\\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 grant_type\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =refresh_token\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 Step 4: Revoking the Access Token\
+\pard\pardeftab720\partightenfactor0
+
+\f2\b0\fs32 \AppleTypeServices \cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_CLIENT_ID"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cf9 \cb7 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ACCESS_TOKEN\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "YOUR_ACCESS_TOKEN"\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 http \cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 -f\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  POST https://api.beatport.com/v4/auth/o/revoke/?client_id=\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $CLIENT_ID\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 &\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 token\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 =\cf9 \strokec9 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 $ACCESS_TOKEN\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs48 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 Error Codes\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 We aim to have consistent error codes across our API. In general, the following should error codes should be expected. If there is special behavior per endpoint, please see the endpoint specific documentation.\
+All errors codes should be in JSON format\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 GET requests\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 GET item by ID with non-existent ID\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 If the user perfroms\'a0
+\f2 \cf4 \cb5 \strokec4 GET
+\f1 \cf2 \cb3 \strokec2 \'a0on a "get by id" endpoint with an\'a0
+\f2 \cf4 \cb5 \strokec4 \{id\}
+\f1 \cf2 \cb3 \strokec2 \'a0that does not exist, the user should receive a\'a0
+\f2 \cf4 \cb5 \strokec4 404 Not Found
+\f1 \cf2 \cb3 \strokec2 \'a0error with the following response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "detail":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Not found."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1 \cf2 \cb3 \strokec2 \shad0 Examples:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0
+\f2 \cf4 \cb5 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 /v4/catalog/tracks/\{id\}/
+\f1 \cf2 \cb1 \strokec2 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 GET item by ID with ID the user does not have access to\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 If the user perfroms\'a0
+\f2 \cf4 \cb5 \strokec4 GET
+\f1 \cf2 \cb3 \strokec2 \'a0on a "get by id" endpoint with an\'a0
+\f2 \cf4 \cb5 \strokec4 \{id\}
+\f1 \cf2 \cb3 \strokec2 \'a0that they do not have access to, the user should receive a\'a0
+\f2 \cf4 \cb5 \strokec4 404 Not Found
+\f1 \cf2 \cb3 \strokec2 \'a0error with the following response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "detail":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Not found."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 Applying filters on GET requests with invalid values\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 If the user tries to filter results by an invalid data type, the user should receive\'a0
+\f2 \cf4 \cb5 \strokec4 400 Bad Request
+\f1 \cf2 \cb3 \strokec2 \'a0error with a JSON response body that explains the error made.\
+Expected response body when using a string for id field:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0       \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "id":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 [\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0           \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Enter a number."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0       \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ]\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1 \cf2 \cb3 \strokec2 \shad0 Expected response body when using an invalid value while filtering on a boolean or enum field:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "<query>":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 [\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0         \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Select a valid choice. <value> is not one of the available choices."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ]\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1 \cf2 \cb3 \strokec2 \shad0 Examples:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls2\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Entering a string to filter by id i.e.:\'a0
+\f2 \cf4 \cb5 \strokec4 /v4/catalog/artists/\\?id\\=kh
+\f1 \cf2 \cb1 \strokec2 \
+\ls2\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Entering any string besides\'a0
+\f2 \cf4 \cb5 \strokec4 true
+\f1 \cf2 \cb3 \strokec2 \'a0or\'a0
+\f2 \cf4 \cb5 \strokec4 false
+\f1 \cf2 \cb3 \strokec2 \'a0on a true/false field i.e.\'a0
+\f2 \cf4 \cb5 \strokec4 /v4/catalog/artists/?enabled=hfgd
+\f1 \cf2 \cb1 \strokec2 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 DELETE requests\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 DELETE on a non-existent id\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 When performing a\'a0
+\f2 \cf4 \cb5 \strokec4 DELETE
+\f1 \cf2 \cb3 \strokec2 \'a0request on an\'a0
+\f2 \cf4 \cb5 \strokec4 \{id\}
+\f1 \cf2 \cb3 \strokec2 \'a0that does not exist, the user should receive a\'a0
+\f2 \cf4 \cb5 \strokec4 404 Not Found
+\f1 \cf2 \cb3 \strokec2 \'a0error with the following response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0   \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "detail":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "Not found."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 DELETE on a an ID that a user is not permitted to delete\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 When performing a\'a0
+\f2 \cf4 \cb5 \strokec4 DELETE
+\f1 \cf2 \cb3 \strokec2 \'a0request on an\'a0
+\f2 \cf4 \cb5 \strokec4 \{id\}
+\f1 \cf2 \cb3 \strokec2 \'a0that does not exist, the user should receive a\'a0
+\f2 \cf4 \cb5 \strokec4 403 Forbidden
+\f1 \cf2 \cb3 \strokec2 \'a0error with the following response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "detail":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "You do not have permission to perform this action."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 PATCH requests\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 PATCH with invalid data\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 When performing a\'a0
+\f2 \cf4 \cb5 \strokec4 PATCH
+\f1 \cf2 \cb3 \strokec2 \'a0request without all of the required fields, the user should receive a\'a0
+\f2 \cf4 \cb5 \strokec4 400 Bad Request
+\f1 \cf2 \cb3 \strokec2 \'a0error with the following response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "name":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 [\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0         \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "This field is required."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ]\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 PATCH with empty body\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 When performing a\'a0
+\f2 \cf4 \cb5 \strokec4 PATCH
+\f1 \cf2 \cb3 \strokec2 \'a0request without all of the required fields, the user should receive a\'a0
+\f2 \cf4 \cb5 \strokec4 400 Bad Request
+\f1 \cf2 \cb3 \strokec2 \'a0error with the following response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "name":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 [\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0         \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "This field is required."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ]\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \strokec2 \shad0 POST requests\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\fs28 \AppleTypeServices\AppleTypeServicesF65539 \cf2 POST with invalid data\
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices \cf2 When performing a\'a0
+\f2 \cf4 \cb5 \strokec4 POST
+\f1 \cf2 \cb3 \strokec2 \'a0request without all the required fields, the user should receive a\'a0
+\f2 \cf4 \cb5 \strokec4 400 Bad Request
+\f1 \cf2 \cb3 \strokec2 \'a0error with the following response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "track_id":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 [\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0         \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "This field may not be blank."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ]\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\sa480\partightenfactor0
+
+\f0\b \cf2 \cb3 \strokec2 \shad0 Incorrect
+\f1\b0 \'a0response body:\
+\pard\pardeftab720\partightenfactor0
+
+\f2 \cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \{\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "track_id":\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0  \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 [\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0         \cf10 \strokec10 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 "This field may not be null."\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\cb7 \shad\shadx0\shady-20\shadr0\shado255 \shadc0     \cf11 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 ]\cf8 \cb1 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+\pard\pardeftab720\partightenfactor0
+\cf11 \cb7 \strokec11 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \}\cf8 \strokec8 \shad\shadx0\shady-20\shadr0\shado255 \shadc0 \
+}

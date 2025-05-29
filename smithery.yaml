@@ -1,0 +1,154 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    properties:
+      apiBaseUrl:
+        type: string
+        title: "API Base URL"
+        description: "Base URL for the API endpoints"
+        examples: ["https://api.example.com", "https://jsonplaceholder.typicode.com"]
+      specSource:
+        type: string
+        title: "OpenAPI Spec Source"
+        description: "How to provide the OpenAPI specification"
+        enum: ["file", "url", "stdin", "inline"]
+        default: "stdin"
+      openApiSpec:
+        type: string
+        title: "OpenAPI Spec Path/URL"
+        description: "Path to local file or URL to OpenAPI specification (when not using stdin/inline)"
+        examples: ["./openapi.json", "https://api.example.com/openapi.json"]
+      specInline:
+        type: string
+        title: "Inline OpenAPI Spec"
+        description: "OpenAPI specification content as JSON string (when using inline mode)"
+      headers:
+        type: string
+        title: "API Headers"
+        description: "API headers in format 'key1:value1,key2:value2'"
+        examples: ["Authorization:Bearer token", "X-API-Key:12345,Content-Type:application/json"]
+      serverName:
+        type: string
+        title: "Server Name"
+        description: "Name for the MCP server"
+        default: "mcp-openapi-server"
+      serverVersion:
+        type: string
+        title: "Server Version"
+        description: "Version for the MCP server"
+        default: "1.0.0"
+      toolsMode:
+        type: string
+        title: "Tools Mode"
+        description: "Which tools to load"
+        enum: ["all", "dynamic"]
+        default: "all"
+      includeTools:
+        type: array
+        title: "Include Specific Tools"
+        description: "Array of specific tool IDs or names to include"
+        items:
+          type: string
+      includeTags:
+        type: array
+        title: "Include Tags"
+        description: "Array of OpenAPI tags to include"
+        items:
+          type: string
+      includeResources:
+        type: array
+        title: "Include Resources"
+        description: "Array of resource path prefixes to include"
+        items:
+          type: string
+      includeOperations:
+        type: array
+        title: "Include Operations"
+        description: "Array of HTTP methods to include (e.g., get, post, put)"
+        items:
+          type: string
+          enum: ["get", "post", "put", "patch", "delete", "head", "options"]
+      disableAbbreviation:
+        type: boolean
+        title: "Disable Abbreviation"
+        description: "Disable name optimization for tool names"
+        default: false
+    required: ["apiBaseUrl"]
+    anyOf:
+      - required: ["openApiSpec"]
+      - properties:
+          specSource:
+            const: "stdin"
+      - required: ["specInline"]
+  commandFunction: |-
+    (config) => {
+      const args = ['bin/mcp-server.js'];
+      const env = {};
+
+      // Required API base URL
+      args.push('--api-base-url', config.apiBaseUrl);
+
+      // Handle different spec source methods
+      if (config.specSource === 'stdin' || (!config.openApiSpec && !config.specInline)) {
+        args.push('--spec-from-stdin');
+        env.OPENAPI_SPEC_FROM_STDIN = 'true';
+      } else if (config.specInline) {
+        args.push('--spec-inline', config.specInline);
+      } else if (config.openApiSpec) {
+        args.push('--openapi-spec', config.openApiSpec);
+      }
+
+      // Optional configuration
+      if (config.headers) {
+        args.push('--headers', config.headers);
+      }
+
+      if (config.serverName) {
+        args.push('--name', config.serverName);
+      }
+
+      if (config.serverVersion) {
+        args.push('--server-version', config.serverVersion);
+      }
+
+      if (config.toolsMode && config.toolsMode !== 'all') {
+        args.push('--tools', config.toolsMode);
+      }
+
+      if (config.includeTools && config.includeTools.length > 0) {
+        config.includeTools.forEach(tool => {
+          args.push('--tool', tool);
+        });
+      }
+
+      if (config.includeTags && config.includeTags.length > 0) {
+        config.includeTags.forEach(tag => {
+          args.push('--tag', tag);
+        });
+      }
+
+      if (config.includeResources && config.includeResources.length > 0) {
+        config.includeResources.forEach(resource => {
+          args.push('--resource', resource);
+        });
+      }
+
+      if (config.includeOperations && config.includeOperations.length > 0) {
+        config.includeOperations.forEach(operation => {
+          args.push('--operation', operation);
+        });
+      }
+
+      if (config.disableAbbreviation) {
+        args.push('--disable-abbreviation');
+      }
+
+      // Always use stdio transport
+      args.push('--transport', 'stdio');
+
+      return { command: 'node', args, env };
+    }
