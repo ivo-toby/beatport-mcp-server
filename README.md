@@ -1,10 +1,12 @@
 # Beatport MCP Server
 
+_Please note; this is still a work in progress!!_
+
 An MCP (Model Context Protocol) server that provides access to the Beatport API for music discovery and data retrieval.
 
 ## Features
 
-- **Easy Authentication**: Simple username/password authentication 
+- **Easy Authentication**: Simple username/password authentication
 - **Full Beatport API**: Access to tracks, artists, labels, releases, charts, and more
 - **Flexible Transport**: Supports both stdio and HTTP transports
 - **Built on OpenAPI**: Leverages the official Beatport OpenAPI specification
@@ -22,17 +24,20 @@ npm install -g @ivotoby/beatport-mcp-server
 ### Option 1: Manual Token (Recommended)
 
 1. **Get your token**:
+
 ```bash
 node get-token.js  # Shows detailed instructions
 ```
 
 2. **Set the token**:
+
 ```bash
 export BEATPORT_ACCESS_TOKEN="your_token_here"
 beatport-mcp-server
 ```
 
 ### Option 2: Username/Password (Won't work currently)
+
 ```bash
 export BEATPORT_USERNAME="your@email.com"
 export BEATPORT_PASSWORD="yourpassword"
@@ -40,6 +45,7 @@ beatport-mcp-server
 ```
 
 ### Option 3: Contact Beatport
+
 Email `engineering@beatport.com` to request OAuth2 credentials for "Beatport MCP Server"
 
 ### HTTP Transport
@@ -70,6 +76,7 @@ beatport-mcp-server --transport http --port 3000
 The server automatically generates MCP tools from the Beatport API endpoints:
 
 ### Catalog
+
 - `catalog-artists-list`: Search and list artists
 - `catalog-artists-retrieve`: Get artist details
 - `catalog-tracks-list`: Search and list tracks
@@ -78,10 +85,12 @@ The server automatically generates MCP tools from the Beatport API endpoints:
 - `catalog-genres-list`: List music genres
 
 ### Charts & Playlists
+
 - `catalog-charts-list`: Browse charts
 - `catalog-playlists-list`: Browse playlists
 
 ### Search & Discovery
+
 - Filter by genre, label, artist, BPM, key, release date
 - Pagination support
 - Detailed metadata for tracks and releases
