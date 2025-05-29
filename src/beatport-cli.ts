@@ -11,6 +11,8 @@ import { hideBin } from 'yargs/helpers';
  * Load configuration from command line and environment
  */
 function loadConfig(): BeatportMCPConfig {
+  console.error('🔧 Loading configuration...');
+  
   const argv = yargs(hideBin(process.argv))
     .option('username', {
       alias: 'u',
@@ -87,12 +89,16 @@ function loadConfig(): BeatportMCPConfig {
       description: 'Disable name optimization',
     })
     .help()
+    .version(false) // Disable yargs built-in version handling
     .parseSync();
 
+  console.error('✅ Arguments parsed successfully');
+  
   // Get credentials from args or environment
   const username = argv.username || process.env.BEATPORT_USERNAME;
   const password = argv.password || process.env.BEATPORT_PASSWORD;
 
+  console.error('🔍 Checking credentials...');
   if (!username || !password) {
     console.error('Error: Beatport credentials are required.');
     console.error('Provide them via:');
@@ -100,8 +106,10 @@ function loadConfig(): BeatportMCPConfig {
     console.error('  Environment: BEATPORT_USERNAME=your@email.com BEATPORT_PASSWORD=yourpassword');
     process.exit(1);
   }
+  
+  console.error('✅ Credentials found');
 
-  return {
+  const config = {
     name: argv.name,
     version: argv.version,
     beatportCredentials: {
@@ -119,6 +127,9 @@ function loadConfig(): BeatportMCPConfig {
     toolsMode: argv.tools as 'all' | 'dynamic',
     disableAbbreviation: argv['disable-abbreviation'],
   };
+  
+  console.error('✅ Configuration created successfully');
+  return config;
 }
 
 /**

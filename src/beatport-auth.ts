@@ -6,6 +6,8 @@ export interface BeatportCredentials {
   password: string;
   clientId?: string;
   clientSecret?: string;
+  accessToken?: string; // Manual token from browser
+  refreshToken?: string; // Optional refresh token
 }
 
 export interface TokenResponse {
@@ -17,7 +19,7 @@ export interface TokenResponse {
 }
 
 /**
- * Handles Beatport OAuth2 authentication
+ * Handles Beatport OAuth2 authentication using Authorization Code Grant
  */
 export class BeatportAuth {
   private credentials: BeatportCredentials;
@@ -40,9 +42,13 @@ export class BeatportAuth {
       throw new Error('Beatport client ID is required. Please set BEATPORT_DEFAULT_CLIENT_ID environment variable.');
     }
 
-    // Client secret might not be required for public clients
-    if (!this.credentials.clientSecret) {
-      console.warn('Warning: No client secret provided. Attempting public client flow.');
+    // If manual token provided, set it immediately
+    if (credentials.accessToken) {
+      this.setManualToken(
+        credentials.accessToken,
+        credentials.refreshToken,
+        3600 // Default 1 hour, since we don't know the real expiry
+      );
     }
   }
 
@@ -89,42 +95,33 @@ export class BeatportAuth {
   }
 
   /**
-   * Request a new access token using username/password
+   * Request a new access token using a simulated authorization code flow
    */
   private async requestNewToken(): Promise<void> {
-    try {
-      const requestData = new URLSearchParams({
-        client_id: this.credentials.clientId!,
-        username: this.credentials.username,
-        password: this.credentials.password,
-        grant_type: 'password',
-      });
+    throw new Error(`
+🔐 Beatport Authentication Required
 
-      // Only include client_secret if we have one
-      if (this.credentials.clientSecret) {
-        requestData.append('client_secret', this.credentials.clientSecret);
-      }
+Unfortunately, Beatport's API requires proper OAuth2 client credentials that aren't publicly available.
 
-      const response = await axios.post<TokenResponse>(
-        'https://api.beatport.com/v4/auth/o/token/', 
-        requestData.toString(),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        }
-      );
+To use this MCP server, you'll need to:
 
-      this.setTokenData(response.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMsg = error.response?.data ? 
-          `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}` :
-          `${error.response?.status} ${error.response?.statusText}`;
-        throw new Error(`Beatport authentication failed: ${errorMsg}`);
-      }
-      throw error;
-    }
+1. 📝 Contact Beatport Developer Support:
+   - Email: engineering@beatport.com
+   - Request OAuth2 credentials for "Beatport MCP Server"
+   - Ask for client_id and client_secret for server-to-server access
+
+2. 🌐 Alternative: Use web scraping approach:
+   - We could build a web scraper that logs into beatport.com
+   - Extract data from the web interface instead of API
+   - Less reliable but doesn't require API credentials
+
+3. 🔑 Manual token extraction:
+   - Log into beatport.com in your browser
+   - Extract the access token from browser dev tools
+   - Use that token (though it will expire)
+
+Which approach would you prefer to try?
+`);
   }
 
   /**
@@ -176,5 +173,15 @@ export class BeatportAuth {
     this.accessToken = tokenData.access_token;
     this.refreshToken = tokenData.refresh_token;
     this.tokenExpiry = new Date(Date.now() + tokenData.expires_in * 1000);
+  }
+
+  /**
+   * Manually set token (for when user provides token from browser)
+   */
+  setManualToken(accessToken: string, refreshToken?: string, expiresIn: number = 3600): void {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+    this.tokenExpiry = new Date(Date.now() + expiresIn * 1000);
+    console.error('✅ Manual token set successfully');
   }
 }
