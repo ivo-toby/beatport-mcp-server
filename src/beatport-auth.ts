@@ -1,45 +1,48 @@
-import axios from 'axios';
-import { URLSearchParams } from 'url';
+import axios from "axios"
+import { URLSearchParams } from "url"
 
 export interface BeatportCredentials {
-  username: string;
-  password: string;
-  clientId?: string;
-  clientSecret?: string;
-  accessToken?: string; // Manual token from browser
-  refreshToken?: string; // Optional refresh token
+  username: string
+  password: string
+  clientId?: string
+  clientSecret?: string
+  accessToken?: string // Manual token from browser
+  refreshToken?: string // Optional refresh token
 }
 
 export interface TokenResponse {
-  access_token: string;
-  refresh_token: string;
-  expires_in: number;
-  token_type: string;
-  scope: string;
+  access_token: string
+  refresh_token: string
+  expires_in: number
+  token_type: string
+  scope: string
 }
 
 /**
  * Handles Beatport OAuth2 authentication using Authorization Code Grant
  */
 export class BeatportAuth {
-  private credentials: BeatportCredentials;
-  private accessToken?: string;
-  private refreshToken?: string;
-  private tokenExpiry?: Date;
+  private credentials: BeatportCredentials
+  private accessToken?: string
+  private refreshToken?: string
+  private tokenExpiry?: Date
 
   // Default Beatport API client credentials
-  private static readonly DEFAULT_CLIENT_ID = process.env.BEATPORT_DEFAULT_CLIENT_ID || 'MTZS0g1HCT1RIyBeJFCq7N6aBRbeEDDJlDC397ht';
-  private static readonly DEFAULT_CLIENT_SECRET = process.env.BEATPORT_DEFAULT_CLIENT_SECRET || '';
+  private static readonly DEFAULT_CLIENT_ID =
+    process.env.BEATPORT_DEFAULT_CLIENT_ID || "MTZS0g1HCT1RIyBeJFCq7N6aBRbeEDDJlDC397ht"
+  private static readonly DEFAULT_CLIENT_SECRET = process.env.BEATPORT_DEFAULT_CLIENT_SECRET || ""
 
   constructor(credentials: BeatportCredentials) {
     this.credentials = {
       ...credentials,
       clientId: credentials.clientId || BeatportAuth.DEFAULT_CLIENT_ID,
       clientSecret: credentials.clientSecret || BeatportAuth.DEFAULT_CLIENT_SECRET,
-    };
+    }
 
     if (!this.credentials.clientId) {
-      throw new Error('Beatport client ID is required. Please set BEATPORT_DEFAULT_CLIENT_ID environment variable.');
+      throw new Error(
+        "Beatport client ID is required. Please set BEATPORT_DEFAULT_CLIENT_ID environment variable.",
+      )
     }
 
     // If manual token provided, set it immediately
@@ -47,8 +50,8 @@ export class BeatportAuth {
       this.setManualToken(
         credentials.accessToken,
         credentials.refreshToken,
-        3600 // Default 1 hour, since we don't know the real expiry
-      );
+        3600, // Default 1 hour, since we don't know the real expiry
+      )
     }
   }
 
@@ -57,30 +60,30 @@ export class BeatportAuth {
    */
   async getAccessToken(): Promise<string> {
     if (this.isTokenValid()) {
-      return this.accessToken!;
+      return this.accessToken!
     }
 
     if (this.refreshToken) {
       try {
-        await this.refreshAccessToken();
-        return this.accessToken!;
+        await this.refreshAccessToken()
+        return this.accessToken!
       } catch (error) {
-        console.warn('Failed to refresh token, requesting new one:', error);
+        console.warn("Failed to refresh token, requesting new one:", error)
       }
     }
 
-    await this.requestNewToken();
-    return this.accessToken!;
+    await this.requestNewToken()
+    return this.accessToken!
   }
 
   /**
    * Get authorization headers for API requests
    */
   async getAuthHeaders(): Promise<Record<string, string>> {
-    const token = await this.getAccessToken();
+    const token = await this.getAccessToken()
     return {
-      'Authorization': `Bearer ${token}`,
-    };
+      Authorization: `Bearer ${token}`,
+    }
   }
 
   /**
@@ -91,7 +94,7 @@ export class BeatportAuth {
       this.accessToken &&
       this.tokenExpiry &&
       this.tokenExpiry > new Date(Date.now() + 60000) // 1 minute buffer
-    );
+    )
   }
 
   /**
@@ -121,7 +124,7 @@ To use this MCP server, you'll need to:
    - Use that token (though it will expire)
 
 Which approach would you prefer to try?
-`);
+`)
   }
 
   /**
@@ -129,40 +132,40 @@ Which approach would you prefer to try?
    */
   private async refreshAccessToken(): Promise<void> {
     if (!this.refreshToken) {
-      throw new Error('No refresh token available');
+      throw new Error("No refresh token available")
     }
 
     try {
       const requestData = new URLSearchParams({
         client_id: this.credentials.clientId!,
         refresh_token: this.refreshToken,
-        grant_type: 'refresh_token',
-      });
+        grant_type: "refresh_token",
+      })
 
       // Only include client_secret if we have one
       if (this.credentials.clientSecret) {
-        requestData.append('client_secret', this.credentials.clientSecret);
+        requestData.append("client_secret", this.credentials.clientSecret)
       }
 
       const response = await axios.post<TokenResponse>(
-        'https://api.beatport.com/v4/auth/o/token/', 
+        "https://api.beatport.com/v4/auth/o/token/",
         requestData.toString(),
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-        }
-      );
+        },
+      )
 
-      this.setTokenData(response.data);
+      this.setTokenData(response.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const errorMsg = error.response?.data ? 
-          `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}` :
-          `${error.response?.status} ${error.response?.statusText}`;
-        throw new Error(`Token refresh failed: ${errorMsg}`);
+        const errorMsg = error.response?.data
+          ? `${error.response.status} ${error.response.statusText}: ${JSON.stringify(error.response.data)}`
+          : `${error.response?.status} ${error.response?.statusText}`
+        throw new Error(`Token refresh failed: ${errorMsg}`)
       }
-      throw error;
+      throw error
     }
   }
 
@@ -170,18 +173,18 @@ Which approach would you prefer to try?
    * Set token data from API response
    */
   private setTokenData(tokenData: TokenResponse): void {
-    this.accessToken = tokenData.access_token;
-    this.refreshToken = tokenData.refresh_token;
-    this.tokenExpiry = new Date(Date.now() + tokenData.expires_in * 1000);
+    this.accessToken = tokenData.access_token
+    this.refreshToken = tokenData.refresh_token
+    this.tokenExpiry = new Date(Date.now() + tokenData.expires_in * 1000)
   }
 
   /**
    * Manually set token (for when user provides token from browser)
    */
   setManualToken(accessToken: string, refreshToken?: string, expiresIn: number = 3600): void {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    this.tokenExpiry = new Date(Date.now() + expiresIn * 1000);
-    console.error('✅ Manual token set successfully');
+    this.accessToken = accessToken
+    this.refreshToken = refreshToken
+    this.tokenExpiry = new Date(Date.now() + expiresIn * 1000)
+    console.error("✅ Manual token set successfully")
   }
 }
