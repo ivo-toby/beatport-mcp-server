@@ -97,13 +97,49 @@ function loadConfig(): BeatportMCPConfig {
   // Get credentials from args or environment
   const username = argv.username || process.env.BEATPORT_USERNAME;
   const password = argv.password || process.env.BEATPORT_PASSWORD;
+  const accessToken = process.env.BEATPORT_ACCESS_TOKEN;
+  const refreshToken = process.env.BEATPORT_REFRESH_TOKEN;
 
   console.error('🔍 Checking credentials...');
+  
+  // If we have an access token, we can skip username/password
+  if (accessToken) {
+    console.error('✅ Manual access token found');
+    
+    const config = {
+      name: argv.name,
+      version: argv.version,
+      beatportCredentials: {
+        username: username || 'token-user', // Dummy username when using token
+        password: password || 'token-pass', // Dummy password when using token
+        accessToken,
+        refreshToken,
+      },
+      transportType: argv.transport as 'stdio' | 'http',
+      httpPort: argv.port,
+      httpHost: argv.host,
+      endpointPath: argv.path,
+      includeTools: argv.tool as string[] | undefined,
+      includeTags: argv.tag as string[] | undefined,
+      includeResources: argv.resource as string[] | undefined,
+      includeOperations: argv.operation as string[] | undefined,
+      toolsMode: argv.tools as 'all' | 'dynamic',
+      disableAbbreviation: argv['disable-abbreviation'],
+    };
+    
+    console.error('✅ Configuration created with manual token');
+    return config;
+  }
+  
+  // Otherwise require username/password
   if (!username || !password) {
     console.error('Error: Beatport credentials are required.');
     console.error('Provide them via:');
     console.error('  Command line: --username your@email.com --password yourpassword');
     console.error('  Environment: BEATPORT_USERNAME=your@email.com BEATPORT_PASSWORD=yourpassword');
+    console.error('  Manual token: BEATPORT_ACCESS_TOKEN=your_token_here');
+    console.error('');
+    console.error('💡 To get a manual token, run: node get-token.js');
     process.exit(1);
   }
   

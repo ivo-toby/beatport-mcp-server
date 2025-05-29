@@ -15,21 +15,32 @@ An MCP (Model Context Protocol) server that provides access to the Beatport API 
 npm install -g @ivotoby/beatport-mcp-server
 ```
 
-## Usage
+## Authentication
 
-### Environment Variables (Recommended)
+⚠️ **Important**: Beatport's API requires OAuth2 credentials that aren't publicly available. You have three options:
 
+### Option 1: Manual Token (Recommended)
+
+1. **Get your token**:
+```bash
+node get-token.js  # Shows detailed instructions
+```
+
+2. **Set the token**:
+```bash
+export BEATPORT_ACCESS_TOKEN="your_token_here"
+beatport-mcp-server
+```
+
+### Option 2: Username/Password (Won't work currently)
 ```bash
 export BEATPORT_USERNAME="your@email.com"
 export BEATPORT_PASSWORD="yourpassword"
 beatport-mcp-server
 ```
 
-### Command Line Arguments
-
-```bash
-beatport-mcp-server --username your@email.com --password yourpassword
-```
+### Option 3: Contact Beatport
+Email `engineering@beatport.com` to request OAuth2 credentials for "Beatport MCP Server"
 
 ### HTTP Transport
 
