@@ -96,7 +96,7 @@ export class BeatportMCPServer {
     try {
       const __filename = url.fileURLToPath(import.meta.url)
       const __dirname = path.dirname(__filename)
-      const specPath = path.resolve(__dirname, "../DOCS/openapi.spec.json")
+      const specPath = path.resolve(__dirname, "../specs/beatport-openapi.spec.json")
 
       const specContent = await fs.readFile(specPath, "utf8")
       return specContent
