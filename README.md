@@ -59,6 +59,8 @@ beatport-mcp-server --transport http --port 3000
 - `--username, -u`: Beatport username/email (or `BEATPORT_USERNAME`)
 - `--password, -p`: Beatport password (or `BEATPORT_PASSWORD`)
 - `--transport, -t`: Transport type: `stdio` (default) or `http`
+- `--accessToken, -a`: Bearer token (or `BEATPORT_ACCESS_TOKEN`)
+- `--refreshToken, -r`: Refresh token (or `BEATPORT_REFRESH_TOKEN`)
 - `--port`: HTTP port (default: 3000, for HTTP transport)
 - `--host`: HTTP host (default: 127.0.0.1, for HTTP transport)
 - `--path`: HTTP endpoint path (default: /mcp, for HTTP transport)

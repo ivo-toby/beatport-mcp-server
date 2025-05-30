@@ -24,6 +24,16 @@ function loadConfig(): BeatportMCPConfig {
       type: "string",
       description: "Beatport password",
     })
+    .option("accessToken", {
+      alias: "a",
+      type: "string",
+      description: "Beatport Bearer access token",
+    })
+    .option("refreshToken", {
+      alias: "r",
+      type: "string",
+      description: "Beatport refresh token",
+    })
     .option("transport", {
       alias: "t",
       type: "string",
@@ -97,8 +107,8 @@ function loadConfig(): BeatportMCPConfig {
   // Get credentials from args or environment
   const username = argv.username || process.env.BEATPORT_USERNAME
   const password = argv.password || process.env.BEATPORT_PASSWORD
-  const accessToken = process.env.BEATPORT_ACCESS_TOKEN
-  const refreshToken = process.env.BEATPORT_REFRESH_TOKEN
+  const accessToken = argv.accessToken || process.env.BEATPORT_ACCESS_TOKEN
+  const refreshToken = argv.refreshToken || process.env.BEATPORT_REFRESH_TOKEN
 
   console.error("🔍 Checking credentials...")
 
