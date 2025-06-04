@@ -168,11 +168,11 @@ function loadConfig(): BeatportMCPConfig {
     endpointPath: argv.path,
     includeTools: argv.tool as string[] | undefined,
     includeTags: argv.tag as string[] | undefined,
-    includeResources: argv.resource as string[] | undefined,
-    includeOperations: argv.operation as string[] | undefined,
-    toolsMode: argv.tools as "all" | "dynamic",
-    disableAbbreviation: argv["disable-abbreviation"],
-  }
+      includeResources: argv.resource as string[] | undefined,
+      includeOperations: argv.operation as string[] | undefined,
+      toolsMode: argv.tools as "all" | "dynamic",
+      disableAbbreviation: argv["disable-abbreviation"],
+    }
 
   console.error("✅ Configuration created successfully")
   return config

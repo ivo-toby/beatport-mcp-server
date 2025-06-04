@@ -5,6 +5,14 @@ import * as fs from "fs/promises"
 import * as path from "path"
 import * as url from "url"
 
+// Endpoints that are not supported by the server
+const DISABLED_ENDPOINTS = [
+  "/v4/my/account/",
+  "/v4/my/account/{id}/",
+  "/v4/my/beatport/",
+  "/v4/my/beatport/delete/",
+]
+
 export interface BeatportMCPConfig {
   name?: string
   version?: string
@@ -52,6 +60,31 @@ export class BeatportMCPServer {
     try {
       specContent = await this.getBeatportOpenAPISpec()
       console.error("✅ OpenAPI spec loaded successfully")
+      if (DISABLED_ENDPOINTS.length > 0) {
+        const spec = JSON.parse(specContent)
+        for (const entry of DISABLED_ENDPOINTS) {
+          const parts = entry.trim().split(/\s+/)
+          let method: string | undefined
+          let path: string
+          if (parts.length > 1) {
+            method = parts[0].toLowerCase()
+            path = parts[1]
+          } else {
+            path = parts[0]
+          }
+          if (spec.paths && spec.paths[path]) {
+            if (method) {
+              delete spec.paths[path][method]
+              if (Object.keys(spec.paths[path]).length === 0) {
+                delete spec.paths[path]
+              }
+            } else {
+              delete spec.paths[path]
+            }
+          }
+        }
+        specContent = JSON.stringify(spec, null, 2)
+      }
     } catch (error) {
       console.error("❌ Failed to load OpenAPI spec:", error)
       throw error
